@@ -34,11 +34,24 @@ fun resolveLocal(refName:String, ref: PsiElement, context: SearchContext? = null
 
 fun resolveInFile(refName:String, pin: PsiElement, context: SearchContext?): PsiElement? {
     var ret: PsiElement? = null
-    LuaDeclarationTree.get(pin.containingFile).walkUp(pin) { decl ->
-        if (decl.name == refName)
-            ret = decl.firstDeclaration.psi
+    var lastNameExpr: LuaNameExpr? = null
+
+    //local/param
+    LuaPsiTreeUtilEx.walkUpNameDef(pin, Processor { nameDef ->
+        if (refName == nameDef.name)
+            ret = nameDef
         ret == null
-    }
+    }, Processor {
+        for (expr in it.varExprList.exprList) {
+            if (expr is LuaNameExpr && expr.name == refName) {
+                lastNameExpr = expr
+                return@Processor true
+            }
+        }
+        true
+    })
+
+    ret = ret ?: lastNameExpr
 
     if (ret == null && refName == Constants.WORD_SELF) {
         val methodDef = PsiTreeUtil.getStubOrPsiParentOfType(pin, LuaClassMethodDef::class.java)

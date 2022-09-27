@@ -104,7 +104,16 @@ QQ交流群：1群：`29850775` 2群：`529914962`
         
 ## Building
 
-  `./gradlew build_182`
+  `./gradlew build_193`
+
+## 问题：
+1、ideaIU下载失败
+手动下载，然后拷贝（不用解压）
+2、emmydebuger反复下载
+将build_plugin.gradle中下载任务注释
+3、MoveFileTest编译失败
+删掉这个Test
+
 
 ## Developed By
 

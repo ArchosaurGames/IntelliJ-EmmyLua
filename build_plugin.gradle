@@ -167,24 +167,24 @@ task buildPluginWithBunch() {
     finalizedBy buildPlugin
     doLast {
         // reset
-        exec {
-            executable "git"
-            args "reset", "HEAD", "--hard"
-        }
+        //exec {
+        //    executable "git"
+        //    args "reset", "HEAD", "--hard"
+        //}
         // clean untracked files
-        exec {
-            executable "git"
-            args "clean", "-d", "-f"
-        }
+        //exec {
+        //    executable "git"
+        //    args "clean", "-d", "-f"
+        //}
         // switch
         exec {
             executable isWin ? "bunch/bin/bunch.bat" : "bunch/bin/bunch"
             args "switch", ".", IDEA_VER
         }
         // reset to HEAD
-        exec {
-            executable "git"
-            args "reset", rev
-        }
+        //exec {
+        //    executable "git"
+        //    args "reset", rev
+        //}
     }
 }
