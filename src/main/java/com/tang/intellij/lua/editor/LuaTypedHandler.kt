@@ -23,6 +23,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 import com.tang.intellij.lua.lang.LuaFileType
+import com.tang.intellij.lua.project.LuaSettings
 import com.tang.intellij.lua.psi.LuaFuncBody
 import com.tang.intellij.lua.psi.LuaTypes
 
@@ -52,7 +53,7 @@ class LuaTypedHandler : TypedHandlerDelegate() {
     override fun charTyped(c: Char, project: Project, editor: Editor, file: PsiFile): TypedHandlerDelegate.Result {
         if (file.fileType == LuaFileType.INSTANCE) {
             // function() <caret> end 自动加上end
-            if (c == '(') {
+           if (LuaSettings.instance.isSmartCloseEnd && c == '(') {
                 PsiDocumentManager.getInstance(project).commitDocument(editor.document)
                 val pos = editor.caretModel.offset
                 val element = file.findElementAt(pos)
